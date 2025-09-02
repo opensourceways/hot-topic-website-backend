@@ -78,9 +78,9 @@ func (s *appService) checkInvokeByTime(times []time.Weekday) error {
 }
 
 func (s *appService) NewReviews(community string, cmd CmdToUploadOptionalTopics) error {
-	if err := s.checkInvokeByTime([]time.Weekday{time.Friday}); err != nil {
-		return err
-	}
+	// if err := s.checkInvokeByTime([]time.Weekday{time.Friday}); err != nil {
+	// 	return err
+	// }
 
 	cmd.init()
 
