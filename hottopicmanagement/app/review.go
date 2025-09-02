@@ -40,9 +40,9 @@ func (s *appService) checkInvokeForReview() error {
 }
 
 func (s *appService) GetTopicsToReview(community string) (TopicsToReviewDTO, error) {
-	if err := s.checkInvokeForReview(); err != nil {
-		return TopicsToReviewDTO{}, err
-	}
+	// if err := s.checkInvokeForReview(); err != nil {
+	// 	return TopicsToReviewDTO{}, err
+	// }
 
 	v, err := s.repoTopicsToReview.Find(community)
 	if err != nil && repository.IsErrorResourceNotFound(err) {

@@ -15,9 +15,9 @@ import (
 )
 
 const (
-	commentTemp = `你好！这个[连接](%s)的信息可能对你解决本问题有所帮助，请参考，谢谢！`
-	gitURL      = `你好！这个\[连接\]\((.*)\)的信息可能对你解决本问题有所帮助，请参考，谢谢！`
-	formURL     = `<p>你好！这个<a href="(.*)">连接</a>的信息可能对你解决本问题有所帮助，请参考，谢谢！</p>`
+	commentTemp = `你好！这个[链接](%s)的信息可能对你解决本问题有所帮助，请参考，谢谢！`
+	gitURL      = `你好！这个\[链接\]\((.*)\)的信息可能对你解决本问题有所帮助，请参考，谢谢！`
+	formURL     = `<p>你好！这个<a href="(.*)">链接</a>的信息可能对你解决本问题有所帮助，请参考，谢谢！</p>`
 )
 
 func genSolutionComment(solution *domain.DiscussionSource) string {
