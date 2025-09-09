@@ -52,7 +52,11 @@ func (s *appService) reviewFile(community string) string {
 	return filepath.Join(s.cfg.FilePath, fmt.Sprintf("%s_%s.xlsx", community, utils.Date()))
 }
 
-func (s *appService) checkInvokeByTime(times []time.Weekday) error {
+func (s *appService) checkInvokeByTime(times []time.Weekday, community string) error {
+	if community == "vllm"
+	{
+		return nil
+	}
 	if !s.cfg.EnableInvokeRestriction {
 		return nil
 	}
@@ -78,9 +82,9 @@ func (s *appService) checkInvokeByTime(times []time.Weekday) error {
 }
 
 func (s *appService) NewReviews(community string, cmd CmdToUploadOptionalTopics) error {
-	// if err := s.checkInvokeByTime([]time.Weekday{time.Friday}); err != nil {
-	// 	return err
-	// }
+	if err := s.checkInvokeByTime([]time.Weekday{time.Friday}, community); err != nil {
+		return err
+	}
 
 	cmd.init()
 

@@ -33,16 +33,16 @@ func (s *appService) toSelected(
 	return r, nil
 }
 
-func (s *appService) checkInvokeForReview() error {
+func (s *appService) checkInvokeForReview(community string) error {
 	times := []time.Weekday{time.Friday, time.Saturday, time.Sunday}
 
-	return s.checkInvokeByTime(times)
+	return s.checkInvokeByTime(times, community)
 }
 
 func (s *appService) GetTopicsToReview(community string) (TopicsToReviewDTO, error) {
-	// if err := s.checkInvokeForReview(); err != nil {
-	// 	return TopicsToReviewDTO{}, err
-	// }
+	if err := s.checkInvokeForReview(community); err != nil {
+		return TopicsToReviewDTO{}, err
+	}
 
 	v, err := s.repoTopicsToReview.Find(community)
 	if err != nil && repository.IsErrorResourceNotFound(err) {
@@ -53,7 +53,7 @@ func (s *appService) GetTopicsToReview(community string) (TopicsToReviewDTO, err
 }
 
 func (s *appService) UpdateSelected(community string, cmd *CmdToUpdateSelected) error {
-	if err := s.checkInvokeForReview(); err != nil {
+	if err := s.checkInvokeForReview(community); err != nil {
 		return err
 	}
 
@@ -105,7 +105,7 @@ func (s *appService) getReviews(community string, dateSec int64) (review domain.
 }
 
 func (s *appService) GetTopicsToPublish(community string) (dto HotTopicsDTO, err error) {
-	if err := s.checkInvokeForReview(); err != nil {
+	if err := s.checkInvokeForReview(community); err != nil {
 		return HotTopicsDTO{}, err
 	}
 
@@ -131,7 +131,7 @@ func (s *appService) GetTopicsToPublish(community string) (dto HotTopicsDTO, err
 
 func (s *appService) ApplyToHotTopic(community string) error {
 	weeks := []time.Weekday{time.Monday, time.Tuesday, time.Wednesday}
-	if err := s.checkInvokeByTime(weeks); err != nil {
+	if err := s.checkInvokeByTime(weeks, community); err != nil {
 		return err
 	}
 
