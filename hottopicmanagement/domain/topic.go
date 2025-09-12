@@ -105,11 +105,13 @@ func newAppendedLog(items []DiscussionSource, date string, aWeekAgo time.Time) (
 
 // HotTopic
 type HotTopic struct {
-	Id                string
-	Title             string
-	TransferLogs      []TransferLog
-	DiscussionSources []DiscussionSource
-	Version           int
+	Id                	string
+	Title             	string
+	TransferLogs      	[]TransferLog
+	DiscussionSources 	[]DiscussionSource
+	Version           	int
+	DSSCount        	int
+	CommentCount      	int
 }
 
 func (ht *HotTopic) GetStatus(date int64) TransferLog {

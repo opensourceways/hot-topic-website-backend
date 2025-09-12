@@ -24,6 +24,8 @@ func totopicsToReviewDO(Community string, v *domain.TopicsToReview) topicsToRevi
 		Date:             v.Date,
 		Community:        Community,
 		SelectedTopicsDO: toSelectedTopicsDO(v.Selected),
+		DSSCount:         v.DSSCount,
+		CommentCount:     v.CommentCount,
 	}
 }
 
@@ -61,6 +63,8 @@ type topicsToReviewDO struct {
 	Community  string            `bson:"community"   json:"community"`
 	Version    int               `bson:"version"     json:"-"`
 	Date       int64             `bson:"date"        json:"date"`
+	DSSCount   int               `bson:"dss_count"   json:"dss_count"`
+	CommentCount int              `bson:"comment_count" json:"comment_count"`
 
 	SelectedTopicsDO `bson:",inline"`
 }
@@ -73,6 +77,8 @@ func (do *topicsToReviewDO) toTopicsToReview() domain.TopicsToReview {
 	t := domain.NewTopicsToReview(do.Date)
 	t.Version = do.Version
 	t.Selected = do.SelectedTopicsDO.toSelected()
+	t.DSSCount = do.DSSCount
+	t.CommentCount = do.CommentCount
 
 	for i := range do.Candidates {
 		item := do.Candidates[i]
@@ -92,6 +98,8 @@ type topicToReviewDO struct {
 	Resolved          bool                         `bson:"resolved" json:"resolved"`
 	HotTopicId        string                       `bson:"ht_id"    json:"ht_id"`
 	DiscussionSources []discussionSourceToReviewDO `bson:"sources"  json:"sources"`
+	DSSCount          int                          `bson:"dss_count" json:"dss_count"`
+	CommentCount      int                          `bson:"comment_count" json:"comment_count"`
 }
 
 func (do *topicToReviewDO) toTopicToReview() domain.TopicToReview {
@@ -107,6 +115,8 @@ func (do *topicToReviewDO) toTopicToReview() domain.TopicToReview {
 		Resolved:          do.Resolved,
 		HotTopicId:        do.HotTopicId,
 		DiscussionSources: r,
+		DSSCount:          do.DSSCount,
+		CommentCount:      do.CommentCount,
 	}
 }
 
@@ -123,6 +133,8 @@ func totopicToReviewDO(v *domain.TopicToReview) topicToReviewDO {
 		Resolved:          v.Resolved,
 		HotTopicId:        v.HotTopicId,
 		DiscussionSources: r,
+		DSSCount:          v.DSSCount,
+		CommentCount:      v.CommentCount,
 	}
 }
 
