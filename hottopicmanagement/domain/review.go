@@ -28,20 +28,23 @@ func (r *DiscussionSourceToReview) toDiscussionSourceInfo() DiscussionSourceInfo
 // TopicToReview
 type TopicToReview struct {
 	// it is not empty if the topic is the last host topic
-	HotTopicId        string                     `json:"ht_id"`
-	Order             int                        `json:"order"`
-	Title             string                     `json:"title"`
-	Category          string                     `json:"category"`
-	Resolved          bool                       `json:"resolved"`
-	DiscussionSources []DiscussionSourceToReview `json:"dss"`
+	HotTopicId        	string                     	`json:"ht_id"`
+	Order             	int                        	`json:"order"`
+	Title             	string                     	`json:"title"`
+	Category          	string                     	`json:"category"`
+	Resolved          	bool                       	`json:"resolved"`
+	DSSCount 			int                       	`json:"dss_count"`
+	CommentCount 		int                       	`json:"comment_count"`	
+	DiscussionSources 	[]DiscussionSourceToReview 	`json:"dss"`
 }
 
 func (r *TopicToReview) newHotTopic(dateSec int64, date string) HotTopic {
 	dss := make([]DiscussionSource, len(r.DiscussionSources))
+	commentCount := 0
 	for i := range r.DiscussionSources {
 		item := &r.DiscussionSources[i].DiscussionSource
 		item.ImportedAt = date
-
+		commentCount += item.CommentNum
 		dss[i] = *item
 	}
 
@@ -69,15 +72,19 @@ func (r *TopicToReview) newHotTopic(dateSec int64, date string) HotTopic {
 			},
 		},
 		DiscussionSources: dss,
+		DSSCount:          r.dsNum(),
+		CommentCount:      commentCount,
 	}
 }
 
 func (r *TopicToReview) newNotHotTopic(selectedDS map[int]bool) (NotHotTopic, bool) {
 	v := make([]DiscussionSourceInfo, 0, len(r.DiscussionSources))
+	commentCount := 0
 
 	for i := range r.DiscussionSources {
 		if item := &r.DiscussionSources[i]; !selectedDS[item.Id] {
 			v = append(v, item.toDiscussionSourceInfo())
+			commentCount += item.CommentNum
 		}
 	}
 
@@ -89,6 +96,8 @@ func (r *TopicToReview) newNotHotTopic(selectedDS map[int]bool) (NotHotTopic, bo
 		Title:             r.Title,
 		Category:          r.Category,
 		DiscussionSources: v,
+		DSSCount:          r.dsNum(),
+		CommentCount:      r.CommentCount,
 	}, true
 }
 
