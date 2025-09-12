@@ -104,6 +104,8 @@ type discussionSourceDO struct {
 	SourceId   string `bson:"source_id"    json:"source_id"`
 	CreatedAt  string `bson:"created_at"   json:"created_at"`
 	ImportedAt string `bson:"imported_at"  json:"imported_at"`
+	Company    string `bson:"company"      json:"company"`
+	CommentNum int    `bson:"comment_num"  json:"comment_num"`
 }
 
 func (do *discussionSourceDO) toDiscussionSource() domain.DiscussionSource {
@@ -115,6 +117,8 @@ func (do *discussionSourceDO) toDiscussionSource() domain.DiscussionSource {
 			Title:     do.Title,
 			SourceId:  do.SourceId,
 			CreatedAt: do.CreatedAt,
+			Company:   do.Company,
+			CommentNum:do.CommentNum,
 		},
 		ImportedAt: do.ImportedAt,
 	}
@@ -129,6 +133,8 @@ func todiscussionSourceDO(v *domain.DiscussionSource) discussionSourceDO {
 		SourceId:   v.SourceId,
 		CreatedAt:  v.CreatedAt,
 		ImportedAt: v.ImportedAt,
+		Company:    v.Company,
+		CommentNum: v.CommentNum,
 	}
 }
 

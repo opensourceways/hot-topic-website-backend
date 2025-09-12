@@ -16,12 +16,14 @@ const (
 )
 
 type DiscussionSourceMeta struct {
-	Id        int    `json:"id"           required:"true"`
-	URL       string `json:"url"          required:"true"`
-	Type      string `json:"source_type"  required:"true"`
-	Title     string `json:"title"        required:"true"`
-	SourceId  string `json:"source_id"    required:"true"`
-	CreatedAt string `json:"created_at"   required:"true"`
+	Id        	int    	`json:"id"           required:"true"`
+	URL       	string 	`json:"url"          required:"true"`
+	Type      	string 	`json:"source_type"  required:"true"`
+	Title     	string 	`json:"title"        required:"true"`
+	SourceId  	string 	`json:"source_id"    required:"true"`
+	CreatedAt 	string 	`json:"created_at"   required:"true"`
+	Company		string 	`json:"company"`
+	CommentNum 	int 	`json:"comment_num"`
 }
 
 type DiscussionSource struct {
