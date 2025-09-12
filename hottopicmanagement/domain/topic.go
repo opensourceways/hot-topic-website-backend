@@ -263,6 +263,8 @@ type NotHotTopic struct {
 	Title             string
 	Category          string
 	DiscussionSources []DiscussionSourceInfo
+	DSSCount          int
+	CommentCount      int
 }
 
 func (nht *NotHotTopic) IsWorthless(newTopicCategory string) bool {
