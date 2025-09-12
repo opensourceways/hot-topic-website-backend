@@ -92,14 +92,14 @@ type topicToReviewDO struct {
 	Resolved          bool                         `bson:"resolved" json:"resolved"`
 	HotTopicId        string                       `bson:"ht_id"    json:"ht_id"`
 	DiscussionSources []discussionSourceToReviewDO `bson:"sources"  json:"sources"`
-	DSSCount          int                          `bson:"dss_count" json:"dss_count"`
-	CommentCount      int                          `bson:"comment_count" json:"comment_count"`
 }
 
 func (do *topicToReviewDO) toTopicToReview() domain.TopicToReview {
 	r := make([]domain.DiscussionSourceToReview, len(do.DiscussionSources))
+	commentCount := 0
 	for i := range do.DiscussionSources {
 		r[i] = do.DiscussionSources[i].toDiscussionSourceToReview()
+		commentCount += r[i].CommentNum
 	}
 
 	return domain.TopicToReview{
@@ -109,8 +109,8 @@ func (do *topicToReviewDO) toTopicToReview() domain.TopicToReview {
 		Resolved:          do.Resolved,
 		HotTopicId:        do.HotTopicId,
 		DiscussionSources: r,
-		DSSCount:          do.DSSCount,
-		CommentCount:      do.CommentCount,
+		DSSCount:          len(r),
+		CommentCount:      commentCount,
 	}
 }
 
@@ -127,8 +127,6 @@ func totopicToReviewDO(v *domain.TopicToReview) topicToReviewDO {
 		Resolved:          v.Resolved,
 		HotTopicId:        v.HotTopicId,
 		DiscussionSources: r,
-		DSSCount:          v.DSSCount,
-		CommentCount:      v.CommentCount,
 	}
 }
 
