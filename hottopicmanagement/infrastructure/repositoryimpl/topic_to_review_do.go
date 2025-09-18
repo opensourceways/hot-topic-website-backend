@@ -97,9 +97,11 @@ type topicToReviewDO struct {
 func (do *topicToReviewDO) toTopicToReview() domain.TopicToReview {
 	r := make([]domain.DiscussionSourceToReview, len(do.DiscussionSources))
 	commentCount := 0
+	commenterCount := 0
 	for i := range do.DiscussionSources {
 		r[i] = do.DiscussionSources[i].toDiscussionSourceToReview()
 		commentCount += r[i].CommentNum
+		commenterCount += r[i].CommenterNum
 	}
 
 	return domain.TopicToReview{
@@ -111,6 +113,7 @@ func (do *topicToReviewDO) toTopicToReview() domain.TopicToReview {
 		DiscussionSources: r,
 		DSSCount:          len(r),
 		CommentCount:      commentCount,
+		CommenterNum:      commenterCount,
 	}
 }
 

@@ -111,14 +111,15 @@ type discussionSourceDO struct {
 func (do *discussionSourceDO) toDiscussionSource() domain.DiscussionSource {
 	return domain.DiscussionSource{
 		DiscussionSourceMeta: domain.DiscussionSourceMeta{
-			Id:        do.Id,
-			URL:       do.URL,
-			Type:      do.Type,
-			Title:     do.Title,
-			SourceId:  do.SourceId,
-			CreatedAt: do.CreatedAt,
-			Company:   do.Company,
-			CommentNum:do.CommentNum,
+			Id:           do.Id,
+			URL:          do.URL,
+			Type:         do.Type,
+			Title:        do.Title,
+			SourceId:     do.SourceId,
+			CreatedAt:    do.CreatedAt,
+			Company:      do.Company,
+			CommentNum:   do.CommentNum,
+			CommenterNum: do.CommentNum,
 		},
 		ImportedAt: do.ImportedAt,
 	}

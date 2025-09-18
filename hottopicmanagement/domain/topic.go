@@ -16,14 +16,15 @@ const (
 )
 
 type DiscussionSourceMeta struct {
-	Id         int    `json:"id"           required:"true"`
-	URL        string `json:"url"          required:"true"`
-	Type       string `json:"source_type"  required:"true"`
-	Title      string `json:"title"        required:"true"`
-	SourceId   string `json:"source_id"    required:"true"`
-	CreatedAt  string `json:"created_at"   required:"true"`
-	Company    string `json:"company"`
-	CommentNum int    `json:"comment_num"`
+	Id           int    `json:"id"           required:"true"`
+	URL          string `json:"url"          required:"true"`
+	Type         string `json:"source_type"  required:"true"`
+	Title        string `json:"title"        required:"true"`
+	SourceId     string `json:"source_id"    required:"true"`
+	CreatedAt    string `json:"created_at"   required:"true"`
+	Company      string `json:"company"`
+	CommentNum   int    `json:"comment_num"`
+	CommenterNum int    `json:"commenter_num"`
 }
 
 type DiscussionSource struct {
@@ -112,6 +113,7 @@ type HotTopic struct {
 	Version           int
 	DSSCount          int
 	CommentCount      int
+	CommenterNum      int
 }
 
 func (ht *HotTopic) GetStatus(date int64) TransferLog {
@@ -200,6 +202,7 @@ func (ht *HotTopic) InitReview(t *TopicToReview) error {
 	t.HotTopicId = ht.Id
 	t.DSSCount = t.dsNum()
 	t.CommentCount = commentCount
+	t.CommenterNum = ht.CommenterNum
 
 	return nil
 }
@@ -269,6 +272,7 @@ type NotHotTopic struct {
 	DiscussionSources []DiscussionSourceInfo
 	DSSCount          int
 	CommentCount      int
+	CommenterNum      int
 }
 
 func (nht *NotHotTopic) IsWorthless(newTopicCategory string) bool {
