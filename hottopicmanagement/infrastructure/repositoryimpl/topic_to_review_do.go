@@ -80,7 +80,9 @@ func (do *topicsToReviewDO) toTopicsToReview() domain.TopicsToReview {
 
 		t.AddCandidate(item.Category, &v)
 	}
-
+	if do.Community == "vllm" {
+		t.SortCandidate()
+	}
 	return t
 }
 

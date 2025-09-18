@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"sort"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -255,6 +256,14 @@ func (t *TopicsToReview) AddCandidate(category string, topic *TopicToReview) {
 	topic.Category = category
 
 	t.Candidates[category] = append(t.Candidates[category], *topic)
+}
+
+func (t *TopicsToReview) SortCandidate() {
+	for _, items := range t.Candidates {
+		sort.Slice(items, func(i, j int) bool {
+			return items[i].CommenterNum > items[j].CommenterNum
+		})
+	}
 }
 
 func (t *TopicsToReview) GenNotHotTopics() []NotHotTopic {
