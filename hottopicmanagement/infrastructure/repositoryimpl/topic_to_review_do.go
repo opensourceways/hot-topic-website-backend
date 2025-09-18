@@ -81,6 +81,10 @@ func (do *topicsToReviewDO) toTopicsToReview() domain.TopicsToReview {
 		t.AddCandidate(item.Category, &v)
 	}
 	if do.Community == "vllm" {
+		print(do.Community)
+		for _, items := range t.Candidates {
+			print(items, "11111")
+		}
 		t.SortCandidate()
 	}
 	return t
