@@ -53,7 +53,7 @@ func (s *appService) reviewFile(community string) string {
 }
 
 func (s *appService) checkInvokeByTime(times []time.Weekday, community string) error {
-	if community == "vllm" || community == "unifiedbus" {
+	if community == "vllm" || community == "unifiedbus" || community == "openeuler" {
 		return nil
 	}
 	if !s.cfg.EnableInvokeRestriction {
