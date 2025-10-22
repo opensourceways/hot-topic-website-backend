@@ -12,6 +12,7 @@ import (
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/domain"
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/domain/repository"
 	"github.com/opensourceways/hot-topic-website-backend/utils"
+	"github.com/sirupsen/logrus"
 )
 
 type AppService interface {
@@ -61,6 +62,7 @@ func (s *appService) checkInvokeByTime(times []time.Weekday, community string) e
 	if slices.Contains(NoInvokeCommunity, community) {
 		return nil
 	}
+	logrus.Infof("the community is %s", community)
 	if !s.cfg.EnableInvokeRestriction {
 		return nil
 	}
