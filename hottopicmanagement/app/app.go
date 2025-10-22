@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"slices"
 	"strings"
 	"time"
 
@@ -21,6 +22,10 @@ type AppService interface {
 	GetTopicsToReview(community string) (TopicsToReviewDTO, error)
 	GetTopicsToPublish(community string) (dto HotTopicsDTO, err error)
 	GetWorthlessNotHotTopic(community string) (NotHotTopicsDTO, error)
+}
+
+var NoInvokeCommunity = []string{
+	"vllm", "unifiedbus", "openeuler", "mindcluster", "mindie", "mindsdk", "mindstudio", "pta",
 }
 
 func NewAppService(
@@ -53,7 +58,7 @@ func (s *appService) reviewFile(community string) string {
 }
 
 func (s *appService) checkInvokeByTime(times []time.Weekday, community string) error {
-	if community == "vllm" || community == "unifiedbus" || community == "openeuler" {
+	if slices.Contains(NoInvokeCommunity, community) {
 		return nil
 	}
 	if !s.cfg.EnableInvokeRestriction {
