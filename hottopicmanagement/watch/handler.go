@@ -12,6 +12,7 @@ import (
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/domain/repository"
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/watch/forum"
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/watch/gitcodeissue"
+	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/watch/giteeissue"
 )
 
 const (
@@ -58,6 +59,12 @@ func newClients(cfg *Config) clients {
 		item := cfg.GitCodes[i]
 
 		cli[cli.key(item.Community, item.typeDesc())] = gitcodeissue.NewClient(&item.Detail, sc)
+	}
+
+	for i := range cfg.Gitees {
+		item := cfg.Gitees[i]
+
+		cli[cli.key(item.Community, item.typeDesc())] = giteeissue.NewClient(&item.Detail, sc)
 	}
 
 	return cli

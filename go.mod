@@ -37,6 +37,7 @@ require (
 	github.com/montanaflynn/stats v0.7.1 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/opensourceways/go-gitcode v0.2.2 // indirect
+	github.com/opensourceways/go-gitee v1.0.12 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.4 // indirect
