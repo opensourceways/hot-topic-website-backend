@@ -67,14 +67,17 @@ func (h *handler) handle(needStop func() bool) {
 
 	for _, community := range h.communities {
 		if needStop() {
+			logrus.Infof("handle hot topic, community:%s, stop", community)
 			return
 		}
 
 		if h.cache.isDone(community) {
+			logrus.Infof("handle hot topic, community:%s, is done", community)
 			continue
 		}
 
 		if b, err := h.isDone(community, date, needStop); b {
+			logrus.Infof("handle hot topic, community:%s, is done 11", community)
 			h.cache.add(community)
 			continue
 
