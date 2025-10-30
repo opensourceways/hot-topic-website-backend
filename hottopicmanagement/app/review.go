@@ -8,6 +8,7 @@ import (
 	"github.com/opensourceways/hot-topic-website-backend/common/domain/repository"
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/domain"
 	"github.com/opensourceways/hot-topic-website-backend/utils"
+	"github.com/sirupsen/logrus"
 )
 
 func (s *appService) toSelected(
@@ -149,7 +150,7 @@ func (s *appService) ApplyToHotTopic(community string) error {
 	}
 
 	changed, news := review.FilterChangedAndNews(hts, date)
-
+	logrus.Infof("apply to hot topic, news data:%v", news)
 	for i := range changed {
 		if err := s.repoHotTopic.Save(community, changed[i]); err != nil {
 			return err
