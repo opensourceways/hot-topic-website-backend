@@ -79,6 +79,7 @@ func (cli clients) key(community, t string) string {
 
 func (cli clients) get(community string, ds *domain.DiscussionSource) (platformClient, error) {
 	v := cli[cli.key(community, ds.Type)]
+	logrus.Infof("get client for %s and %s", community, ds.Type)
 	if v == nil {
 		return nil, fmt.Errorf("no client for %s and %s", community, ds.Type)
 	}
