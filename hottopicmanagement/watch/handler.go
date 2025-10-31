@@ -66,7 +66,7 @@ func newClients(cfg *Config) clients {
 
 		cli[cli.key(item.Community, item.typeDesc())] = giteeissue.NewClient(&item.Detail, sc)
 	}
-
+	logrus.Infof("clients: %v", cli)
 	return cli
 }
 
