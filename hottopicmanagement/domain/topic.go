@@ -149,15 +149,15 @@ func (ht *HotTopic) update(r *TopicToReview, date int64, datestr string, aWeekAg
 		return false
 	}
 
-	if updatedAt == date {
-		// for this case, the hot topis of this week are confirmed,
-		// so it is just to avoid update the hot topic repeatly
-		// because it has been saved.
-
-		logrus.Info("it is repeated to update the hot topic")
-
-		return false
-	}
+	//if updatedAt == date {
+	//	// for this case, the hot topis of this week are confirmed,
+	//	// so it is just to avoid update the hot topic repeatly
+	//	// because it has been saved.
+	//
+	//	logrus.Info("it is repeated to update the hot topic")
+	//
+	//	return false
+	//}
 
 	items, all := r.initAppendedDS(datestr)
 	ht.DiscussionSources = all
