@@ -100,6 +100,9 @@ func (h *handler) handle(needStop func() bool) {
 }
 
 func (h *handler) isDone(community string, date int64, needStop func() bool) (bool, error) {
+	if community == "openeuler" {
+		return false, nil
+	}
 	v, err := h.findUpdatingTime(community, needStop)
 	if err != nil {
 		return false, err
