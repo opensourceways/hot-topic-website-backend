@@ -27,7 +27,7 @@ type AppService interface {
 
 var NoInvokeCommunity = []string{
 	"vllm", "unifiedbus", "openeuler", "mindcluster", "mindie", "mindsdk", "mindstudio", "pta",
-	"openubmc", "mindspeed", "pytorch", "triton", "sglang",
+	"openubmc", "mindspeed", "pytorch", "triton", "sglang", "verl", "tilelang", "sgl",
 }
 
 func NewAppService(
