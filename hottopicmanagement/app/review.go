@@ -35,6 +35,9 @@ func (s *appService) toSelected(
 }
 
 func (s *appService) checkInvokeForReview(community string) error {
+	if community == "openeuler" {
+		return nil
+	}
 	times := []time.Weekday{time.Friday, time.Saturday, time.Sunday}
 
 	return s.checkInvokeByTime(times, community)
