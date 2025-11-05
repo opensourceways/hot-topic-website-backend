@@ -11,18 +11,16 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-
-	"github.com/opensourceways/hot-topic-website-backend/utils"
 )
 
 var cli *client
 
 func Init(cfg *Config) error {
 	rootPEM, err := os.ReadFile(cfg.CAFile)
-	err1 := os.Remove(cfg.CAFile)
-	if err2 := utils.MultiErrors(err, err1); err2 != nil {
-		return err2
-	}
+	//err1 := os.Remove(cfg.CAFile)
+	//if err2 := utils.MultiErrors(err, err1); err2 != nil {
+	//	return err2
+	//}
 
 	roots := x509.NewCertPool()
 
