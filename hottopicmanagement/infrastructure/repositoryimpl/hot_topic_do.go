@@ -97,24 +97,30 @@ func (do *hotTopicDO) toTransferLogs() []domain.TransferLog {
 
 // discussionSourceDO
 type discussionSourceDO struct {
-	Id         int    `bson:"id"           json:"id"`
-	URL        string `bson:"url"          json:"url"`
-	Type       string `bson:"type"         json:"type"`
-	Title      string `bson:"title"        json:"title"`
-	SourceId   string `bson:"source_id"    json:"source_id"`
-	CreatedAt  string `bson:"created_at"   json:"created_at"`
-	ImportedAt string `bson:"imported_at"  json:"imported_at"`
+	Id           int    `bson:"id"           json:"id"`
+	URL          string `bson:"url"          json:"url"`
+	Type         string `bson:"type"         json:"type"`
+	Title        string `bson:"title"        json:"title"`
+	SourceId     string `bson:"source_id"    json:"source_id"`
+	CreatedAt    string `bson:"created_at"   json:"created_at"`
+	ImportedAt   string `bson:"imported_at"  json:"imported_at"`
+	Company      string `bson:"company"      json:"company"`
+	CommentNum   int    `bson:"comment_num"  json:"comment_num"`
+	CommenterNum int    `bson:"commenter_num"  json:"commenter_num"`
 }
 
 func (do *discussionSourceDO) toDiscussionSource() domain.DiscussionSource {
 	return domain.DiscussionSource{
 		DiscussionSourceMeta: domain.DiscussionSourceMeta{
-			Id:        do.Id,
-			URL:       do.URL,
-			Type:      do.Type,
-			Title:     do.Title,
-			SourceId:  do.SourceId,
-			CreatedAt: do.CreatedAt,
+			Id:           do.Id,
+			URL:          do.URL,
+			Type:         do.Type,
+			Title:        do.Title,
+			SourceId:     do.SourceId,
+			CreatedAt:    do.CreatedAt,
+			Company:      do.Company,
+			CommentNum:   do.CommentNum,
+			CommenterNum: do.CommenterNum,
 		},
 		ImportedAt: do.ImportedAt,
 	}
@@ -122,13 +128,16 @@ func (do *discussionSourceDO) toDiscussionSource() domain.DiscussionSource {
 
 func todiscussionSourceDO(v *domain.DiscussionSource) discussionSourceDO {
 	return discussionSourceDO{
-		Id:         v.Id,
-		URL:        v.URL,
-		Type:       v.Type,
-		Title:      v.Title,
-		SourceId:   v.SourceId,
-		CreatedAt:  v.CreatedAt,
-		ImportedAt: v.ImportedAt,
+		Id:           v.Id,
+		URL:          v.URL,
+		Type:         v.Type,
+		Title:        v.Title,
+		SourceId:     v.SourceId,
+		CreatedAt:    v.CreatedAt,
+		ImportedAt:   v.ImportedAt,
+		Company:      v.Company,
+		CommentNum:   v.CommentNum,
+		CommenterNum: v.CommenterNum,
 	}
 }
 

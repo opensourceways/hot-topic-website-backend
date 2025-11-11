@@ -5,6 +5,7 @@ import (
 
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/watch/forum"
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/watch/gitcodeissue"
+	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/watch/giteeissue"
 )
 
 type Config struct {
@@ -12,6 +13,7 @@ type Config struct {
 	Interval int             `json:"interval"`
 	Forums   []ForumConfig   `json:"forums"`
 	GitCodes []GitCodeConfig `json:"gitcodes"`
+	Gitees   []GiteeConfig   `json:"gitees"`
 }
 
 func (cfg *Config) ConfigItems() []interface{} {
@@ -64,5 +66,18 @@ func (cfg *GitCodeConfig) typeDesc() string {
 }
 
 func (cfg *GitCodeConfig) ConfigItems() []interface{} {
+	return []interface{}{&cfg.Detail}
+}
+
+type GiteeConfig struct {
+	Community string            `json:"community"    required:"true"`
+	Detail    giteeissue.Config `json:"detail"`
+}
+
+func (cfg *GiteeConfig) typeDesc() string {
+	return "issue"
+}
+
+func (cfg *GiteeConfig) ConfigItems() []interface{} {
 	return []interface{}{&cfg.Detail}
 }
