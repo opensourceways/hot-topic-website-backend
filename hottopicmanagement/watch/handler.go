@@ -12,6 +12,7 @@ import (
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/domain/repository"
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/watch/forum"
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/watch/gitcodeissue"
+	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/watch/giteeissue"
 )
 
 const (
@@ -60,6 +61,12 @@ func newClients(cfg *Config) clients {
 		cli[cli.key(item.Community, item.typeDesc())] = gitcodeissue.NewClient(&item.Detail, sc)
 	}
 
+	for i := range cfg.Gitees {
+		item := cfg.Gitees[i]
+
+		cli[cli.key(item.Community, item.typeDesc())] = giteeissue.NewClient(&item.Detail, sc)
+	}
+	logrus.Infof("clients: %v", cli)
 	return cli
 }
 
@@ -72,6 +79,7 @@ func (cli clients) key(community, t string) string {
 
 func (cli clients) get(community string, ds *domain.DiscussionSource) (platformClient, error) {
 	v := cli[cli.key(community, ds.Type)]
+	logrus.Infof("get client for %s and %s", community, ds.Type)
 	if v == nil {
 		return nil, fmt.Errorf("no client for %s and %s", community, ds.Type)
 	}
@@ -190,8 +198,8 @@ func (h *topicSolutionHandler) handle(
 		topic, err := h.repo.Find(solution.Community, ts.TopicId)
 		if err != nil {
 			logrus.Warnf(
-				"find the topic(%s) of community(%s) failed, err:%s",
-				ts.TopicId, solution.Community, err.Error(),
+				"find the topic(%s) of community(%s) failed, topic id is %s, err:%s",
+				ts.TopicId, solution.Community, ts.TopicId, err.Error(),
 			)
 
 			continue

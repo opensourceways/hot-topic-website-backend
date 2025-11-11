@@ -16,12 +16,15 @@ const (
 )
 
 type DiscussionSourceMeta struct {
-	Id        int    `json:"id"           required:"true"`
-	URL       string `json:"url"          required:"true"`
-	Type      string `json:"source_type"  required:"true"`
-	Title     string `json:"title"        required:"true"`
-	SourceId  string `json:"source_id"    required:"true"`
-	CreatedAt string `json:"created_at"   required:"true"`
+	Id           int    `json:"id"           required:"true"`
+	URL          string `json:"url"          required:"true"`
+	Type         string `json:"source_type"  required:"true"`
+	Title        string `json:"title"        required:"true"`
+	SourceId     string `json:"source_id"    required:"true"`
+	CreatedAt    string `json:"created_at"   required:"true"`
+	Company      string `json:"company"`
+	CommentNum   int    `json:"comment_num"`
+	CommenterNum int    `json:"commenter_num"`
 }
 
 type DiscussionSource struct {
@@ -108,6 +111,9 @@ type HotTopic struct {
 	TransferLogs      []TransferLog
 	DiscussionSources []DiscussionSource
 	Version           int
+	DSSCount          int
+	CommentCount      int
+	CommenterNum      int
 }
 
 func (ht *HotTopic) GetStatus(date int64) TransferLog {
@@ -177,7 +183,7 @@ func (ht *HotTopic) update(r *TopicToReview, date int64, datestr string, aWeekAg
 
 func (ht *HotTopic) InitReview(t *TopicToReview) error {
 	m := t.getDSMap()
-
+	commentCount := 0
 	for i := range ht.DiscussionSources {
 		item := ht.DiscussionSources[i]
 
@@ -187,11 +193,16 @@ func (ht *HotTopic) InitReview(t *TopicToReview) error {
 				"missing discussion source(%d) for the reviewing topic(%s)", v, t.Title,
 			)
 		}
+
+		commentCount += item.CommentNum
 		v.ImportedAt = item.ImportedAt
 	}
 
 	t.Order = ht.Order()
 	t.HotTopicId = ht.Id
+	t.DSSCount = t.dsNum()
+	t.CommentCount = commentCount
+	t.CommenterNum = ht.CommenterNum
 
 	return nil
 }
@@ -259,6 +270,9 @@ type NotHotTopic struct {
 	Title             string
 	Category          string
 	DiscussionSources []DiscussionSourceInfo
+	DSSCount          int
+	CommentCount      int
+	CommenterNum      int
 }
 
 func (nht *NotHotTopic) IsWorthless(newTopicCategory string) bool {

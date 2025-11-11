@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"sort"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -33,15 +34,21 @@ type TopicToReview struct {
 	Title             string                     `json:"title"`
 	Category          string                     `json:"category"`
 	Resolved          bool                       `json:"resolved"`
+	DSSCount          int                        `json:"dss_count"`
+	CommentCount      int                        `json:"comment_count"`
+	CommenterNum      int                        `json:"commenter_num"`
 	DiscussionSources []DiscussionSourceToReview `json:"dss"`
 }
 
 func (r *TopicToReview) newHotTopic(dateSec int64, date string) HotTopic {
 	dss := make([]DiscussionSource, len(r.DiscussionSources))
+	commentCount := 0
+	commenterNum := 0
 	for i := range r.DiscussionSources {
 		item := &r.DiscussionSources[i].DiscussionSource
 		item.ImportedAt = date
-
+		commentCount += item.CommentNum
+		commenterNum += item.CommenterNum
 		dss[i] = *item
 	}
 
@@ -69,15 +76,22 @@ func (r *TopicToReview) newHotTopic(dateSec int64, date string) HotTopic {
 			},
 		},
 		DiscussionSources: dss,
+		DSSCount:          r.dsNum(),
+		CommentCount:      commentCount,
+		CommenterNum:      commenterNum,
 	}
 }
 
 func (r *TopicToReview) newNotHotTopic(selectedDS map[int]bool) (NotHotTopic, bool) {
 	v := make([]DiscussionSourceInfo, 0, len(r.DiscussionSources))
+	commentCount := 0
+	commenterNum := 0
 
 	for i := range r.DiscussionSources {
 		if item := &r.DiscussionSources[i]; !selectedDS[item.Id] {
 			v = append(v, item.toDiscussionSourceInfo())
+			commentCount += item.CommentNum
+			commenterNum += item.CommenterNum
 		}
 	}
 
@@ -89,6 +103,9 @@ func (r *TopicToReview) newNotHotTopic(selectedDS map[int]bool) (NotHotTopic, bo
 		Title:             r.Title,
 		Category:          r.Category,
 		DiscussionSources: v,
+		DSSCount:          r.dsNum(),
+		CommentCount:      r.CommentCount,
+		CommenterNum:      r.CommenterNum,
 	}, true
 }
 
@@ -239,6 +256,14 @@ func (t *TopicsToReview) AddCandidate(category string, topic *TopicToReview) {
 	topic.Category = category
 
 	t.Candidates[category] = append(t.Candidates[category], *topic)
+}
+
+func (t *TopicsToReview) SortCandidate() {
+	for _, items := range t.Candidates {
+		sort.Slice(items, func(i, j int) bool {
+			return items[i].CommenterNum > items[j].CommenterNum
+		})
+	}
 }
 
 func (t *TopicsToReview) GenNotHotTopics() []NotHotTopic {
