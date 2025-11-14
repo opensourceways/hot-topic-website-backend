@@ -134,7 +134,9 @@ func (s *appService) GetTopicsToPublish(community string) (dto HotTopicsDTO, err
 
 func (s *appService) ApplyToHotTopic(community string) error {
 	weeks := []time.Weekday{time.Monday, time.Tuesday, time.Wednesday}
+	print("community: %s", community)
 	if err := s.checkInvokeByTime(weeks, community); err != nil {
+		print("community invoke by time ", community)
 		return err
 	}
 
@@ -143,11 +145,13 @@ func (s *appService) ApplyToHotTopic(community string) error {
 
 	review, err := s.getReviews(community, dateSec)
 	if err != nil {
+		print("community get reviews failed, community:", community)
 		return err
 	}
 
 	hts, err := s.repoHotTopic.FindAll(community, dateSec)
 	if err != nil {
+		print("community find all hot topics failed, community:", community)
 		return err
 	}
 
