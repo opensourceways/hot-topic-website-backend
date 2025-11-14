@@ -66,7 +66,9 @@ func (h *handler) handle(needStop func() bool) {
 	h.cache.refresh(date)
 
 	for _, community := range h.communities {
+		print("community:", community)
 		if needStop() {
+			print("stop handle")
 			return
 		}
 
