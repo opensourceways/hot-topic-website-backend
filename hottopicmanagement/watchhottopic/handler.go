@@ -71,19 +71,21 @@ func (h *handler) handle(needStop func() bool) {
 		}
 
 		if h.cache.isDone(community) {
+			print("skip community:", community)
 			continue
 		}
 
 		if b, err := h.isDone(community, date, needStop); b {
+			print("is done, community:", community)
 			h.cache.add(community)
 			continue
 
 		} else if err != nil {
-			logrus.Errorf("check if is is done failed, community:%s, err:%s", community, err.Error())
+			print("check if is is done failed, community:%s, err:%s", community, err.Error())
 
 			continue
 		}
-
+		print("apply hot topic, community:", community)
 		err := h.doApply(community, needStop)
 		logrus.Infof("apply hot topic, community:%s, err:%v", community, err)
 
