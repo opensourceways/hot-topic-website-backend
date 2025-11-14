@@ -64,7 +64,7 @@ func (h *handler) handle(needStop func() bool) {
 	date := utils.GetLastFriday().Unix()
 
 	h.cache.refresh(date)
-
+	print("communities:", h.communities)
 	for _, community := range h.communities {
 		print("community:", community)
 		if needStop() {
