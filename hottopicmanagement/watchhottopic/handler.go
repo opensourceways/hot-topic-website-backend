@@ -98,7 +98,7 @@ func (h *handler) handle(needStop func() bool) {
 		}
 
 		if allerror.IsError(err, allerror.ErrorCodeInvokeTimeRestricted) {
-			return
+			continue
 		}
 	}
 }
