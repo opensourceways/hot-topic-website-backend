@@ -1,6 +1,7 @@
 package watchhottopic
 
 import (
+	"slices"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -10,6 +11,12 @@ import (
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/domain/repository"
 	"github.com/opensourceways/hot-topic-website-backend/utils"
 )
+
+var NoInvokeCommunity = []string{
+	"vllm", "unifiedbus", "openeuler", "mindcluster", "mindie", "mindsdk", "mindstudio", "pta",
+	"openubmc", "mindspeed", "pytorch", "triton", "sglang", "verl", "tilelang", "sgl",
+	"mindspore", "openfuyao", "ascendnpuir", "cannopen",
+}
 
 func newdoneCache() doneCache {
 	return doneCache{
@@ -104,7 +111,7 @@ func (h *handler) handle(needStop func() bool) {
 }
 
 func (h *handler) isDone(community string, date int64, needStop func() bool) (bool, error) {
-	if community == "openeuler" {
+	if slices.Contains(NoInvokeCommunity, community) {
 		return false, nil
 	}
 	v, err := h.findUpdatingTime(community, needStop)
