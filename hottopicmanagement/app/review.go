@@ -8,6 +8,7 @@ import (
 	"github.com/opensourceways/hot-topic-website-backend/common/domain/repository"
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/domain"
 	"github.com/opensourceways/hot-topic-website-backend/utils"
+	"github.com/sirupsen/logrus"
 )
 
 func (s *appService) toSelected(
@@ -129,9 +130,9 @@ func (s *appService) GetTopicsToPublish(community string) (dto HotTopicsDTO, err
 
 func (s *appService) ApplyToHotTopic(community string) error {
 	weeks := []time.Weekday{time.Monday, time.Tuesday, time.Wednesday}
-	print("community: %s", community)
+	logrus.Infof("community: %s", community)
 	if err := s.checkInvokeByTime(weeks, community); err != nil {
-		print("community invoke by time ", community)
+		logrus.Infof("community invoke by time %s", community)
 		return err
 	}
 
@@ -140,18 +141,18 @@ func (s *appService) ApplyToHotTopic(community string) error {
 
 	review, err := s.getReviews(community, dateSec)
 	if err != nil {
-		print("community get reviews failed, community:", community)
+		logrus.Infof("community get reviews failed, community:%s", community)
 		return err
 	}
 
 	hts, err := s.repoHotTopic.FindAll(community, dateSec)
 	if err != nil {
-		print("community find all hot topics failed, community:", community)
+		logrus.Infof("community find all hot topics failed, community:%s", community)
 		return err
 	}
 
 	changed, news := review.FilterChangedAndNews(hts, date)
-	print("apply to hot topic, community:", community, "news data:%v", news)
+	logrus.Infof("apply to hot topic, community:%s, news data:%v", community, news)
 	for i := range changed {
 		if err := s.repoHotTopic.Save(community, changed[i]); err != nil {
 			return err

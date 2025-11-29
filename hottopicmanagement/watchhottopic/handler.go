@@ -94,7 +94,7 @@ func (h *handler) handle(needStop func() bool) {
 
 			continue
 		}
-		print("apply hot topic, community:", community)
+		logrus.Infof("apply hot topic, community:%s", community)
 		err := h.doApply(community, needStop)
 		logrus.Infof("apply hot topic, community:%s, err:%v", community, err)
 
