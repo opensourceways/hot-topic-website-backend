@@ -148,7 +148,6 @@ func (ht *HotTopic) update(r *TopicToReview, date int64, datestr string, aWeekAg
 		// it is impossible that there aren't old logs
 		return false
 	}
-	logrus.Infof("updatedAt:%d, date:%d", updatedAt, date)
 	//if updatedAt == date {
 	//	// for this case, the hot topis of this week are confirmed,
 	//	// so it is just to avoid update the hot topic repeatly
