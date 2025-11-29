@@ -117,13 +117,10 @@ type HotTopic struct {
 }
 
 func (ht *HotTopic) GetStatus(date int64) TransferLog {
-	for i := range ht.TransferLogs {
-		if ht.TransferLogs[i].Date == date {
-			return ht.TransferLogs[i]
-		}
-	}
-
-	return TransferLog{}
+    if len(ht.TransferLogs) == 0 {
+        return TransferLog{}
+    }
+    return ht.TransferLogs[len(ht.TransferLogs)-1]
 }
 
 func (ht *HotTopic) UpdatedAt() int64 {

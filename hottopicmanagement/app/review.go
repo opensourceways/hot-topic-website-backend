@@ -120,11 +120,9 @@ func (s *appService) GetTopicsToPublish(community string) (dto HotTopicsDTO, err
 	if err != nil {
 		return
 	}
-	logrus.Infof("community:%s, data:%v", community, hts)
 	_, news := review.FilterChangedAndNews(hts, date)
 
 	dto = toHotTopicsDTO(append(hts, news...), dateSec)
-	logrus.Infof("community:%s, news data:%v", community, news)
 	return
 }
 
