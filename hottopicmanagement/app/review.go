@@ -8,7 +8,6 @@ import (
 	"github.com/opensourceways/hot-topic-website-backend/common/domain/repository"
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/domain"
 	"github.com/opensourceways/hot-topic-website-backend/utils"
-	"github.com/sirupsen/logrus"
 )
 
 func (s *appService) toSelected(
@@ -59,7 +58,6 @@ func (s *appService) UpdateSelected(community string, cmd *CmdToUpdateSelected) 
 	}
 
 	t, err := s.repoTopicsToReview.FindSelected(community)
-	logrus.Infof("community:%s, date:%d", community, t.Date)
 	if err != nil {
 		if repository.IsErrorResourceNotFound(err) {
 			err = allerror.NewNotFoundError("can't find old reviewed data", err)
@@ -67,11 +65,9 @@ func (s *appService) UpdateSelected(community string, cmd *CmdToUpdateSelected) 
 
 		return err
 	}
-	logrus.Infof("selected:%v", cmd.Selected)
 	if err := t.UpdateSelected(sheetLastTopics, cmd.Selected, s.repoTopicsToReview.NewId); err != nil {
 		return err
 	}
-	logrus.Infof("selected1111:%v", t.Selected)
 	// TODO check if all the discussion sources are valid, for example there are from Data Clean
 
 	return s.repoTopicsToReview.SaveSelected(community, &t)

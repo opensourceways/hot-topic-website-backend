@@ -3,6 +3,7 @@ package repositoryimpl
 import (
 	"time"
 
+	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/opensourceways/hot-topic-website-backend/common/domain/repository"
@@ -74,6 +75,7 @@ func (impl *topicToReview) FindSelected(community string) (domain.TopicsToReview
 func (impl *topicToReview) SaveSelected(community string, v *domain.TopicsToReview) error {
 	do := toSelectedTopicsDO(v.Selected)
 	doc, err := do.toDoc()
+	logrus.Infof("doc:%v", doc)
 	if err != nil {
 		return err
 	}
