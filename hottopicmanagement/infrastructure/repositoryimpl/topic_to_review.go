@@ -75,7 +75,7 @@ func (impl *topicToReview) FindSelected(community string) (domain.TopicsToReview
 func (impl *topicToReview) SaveSelected(community string, v *domain.TopicsToReview) error {
 	do := toSelectedTopicsDO(v.Selected)
 	doc, err := do.toDoc()
-	logrus.Infof("doc:%v", doc)
+	logrus.Infof("dao:%v, err:%v", impl.dao, err)
 	if err != nil {
 		return err
 	}
