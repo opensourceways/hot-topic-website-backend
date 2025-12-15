@@ -233,6 +233,9 @@ func (h *topicSolutionHandler) handleTopicSolution(
 
 		resolvedOne := h.getDiscussionSource(topic, item.ResolvedOne)
 		if resolvedOne == nil {
+			resolvedOne = h.getDSSFromClosedTopic(community, item.ResolvedOne)
+		}
+		if resolvedOne == nil {
 			continue
 		}
 
@@ -280,6 +283,27 @@ func (h *topicSolutionHandler) getDiscussionSource(topic *domain.HotTopic, dsId 
 	}
 
 	return ds
+}
+
+func (h *topicSolutionHandler) getDSSFromClosedTopic(community string, dsId int) *domain.DiscussionSource {
+	closed_topics, err := h.repo.FindClosedOnes(community)
+	if err != nil {
+		logrus.Errorf("find closed topics failed, err: %s", err.Error())
+		return nil
+	}
+	if len(closed_topics) == 0 {
+		return nil
+	}
+
+	for i := range closed_topics {
+		topic := &closed_topics[i]
+		ds := topic.GetDiscussionSource(dsId)
+		if ds != nil {
+			return ds
+		}
+	}
+	logrus.Errorf("try to find the DiscussionSource(%d) from closed topic fail", dsId)
+	return nil
 }
 
 func (h *topicSolutionHandler) handleDiscussionSourceSolution(
