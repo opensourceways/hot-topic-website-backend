@@ -8,6 +8,7 @@ type RepoHotTopic interface {
 	Save(string, *domain.HotTopic) error
 	FindAll(string, int64) ([]domain.HotTopic, error)
 	FindOpenOnes(string) ([]domain.HotTopic, error)
+	FindClosedOnes(string) ([]domain.HotTopic, error)
 }
 
 type RepoNotHotTopic interface {

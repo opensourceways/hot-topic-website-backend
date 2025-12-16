@@ -13,6 +13,7 @@ const (
 	mongodbCmdIn        = "$in"
 	mongodbCmdLte       = "$lte"
 	mongodbCmdGte       = "$gte"
+	mongodbCmdGt	   	= "$gt"
 	mongodbCmdElemMatch = "$elemMatch"
 )
 

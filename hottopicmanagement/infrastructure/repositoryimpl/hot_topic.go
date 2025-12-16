@@ -118,6 +118,34 @@ func (impl *hotTopic) FindOpenOnes(community string) ([]domain.HotTopic, error) 
 	return v, nil
 }
 
+func (impl *hotTopic) FindClosedOnes(community string) ([]domain.HotTopic, error) {
+	dao, err := impl.dao(community)
+	if err != nil {
+		return nil, err
+	}
+
+	filter := bson.M{
+		fieldClosedAt: bson.M{mongodbCmdGt: 0},
+	}
+
+	sort := bson.M{
+		fieldOrder: 1,
+	}
+
+	var dos []hotTopicDO
+
+	if err := dao.GetDocs(filter, nil, sort, 0, &dos); err != nil {
+		return nil, err
+	}
+
+	v := make([]domain.HotTopic, len(dos))
+	for i := range dos {
+		v[i] = dos[i].toHotTopic()
+	}
+
+	return v, nil
+}
+
 func (impl *hotTopic) Find(community, topicId string) (topic domain.HotTopic, err error) {
 	dao, err := impl.dao(community)
 	if err != nil {
