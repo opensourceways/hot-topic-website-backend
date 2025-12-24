@@ -133,6 +133,7 @@ func (s *appService) GetTopicsToPublish(community string) (dto HotTopicsDTO, err
 func (s *appService) ApplyToHotTopic(community string) error {
 	weeks := []time.Weekday{time.Monday, time.Tuesday, time.Wednesday}
 	if err := s.checkInvokeByTime(weeks, community); err != nil {
+		logrus.Infof("community invoke by time %s", community)
 		return err
 	}
 
@@ -141,16 +142,18 @@ func (s *appService) ApplyToHotTopic(community string) error {
 
 	review, err := s.getReviews(community, dateSec)
 	if err != nil {
+		logrus.Infof("community get reviews failed, community:%s", community)
 		return err
 	}
 
 	hts, err := s.repoHotTopic.FindAll(community, dateSec)
 	if err != nil {
+		logrus.Infof("community find all hot topics failed, community:%s", community)
 		return err
 	}
 
 	changed, news := review.FilterChangedAndNews(hts, date)
-	logrus.Infof("apply to hot topic, news data:%v", news)
+	logrus.Infof("apply to hot topic, community:%s, news data:%v", community, news)
 	for i := range changed {
 		if err := s.repoHotTopic.Save(community, changed[i]); err != nil {
 			return err

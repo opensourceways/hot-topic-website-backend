@@ -1,6 +1,7 @@
 package watchhottopic
 
 import (
+	"slices"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -10,6 +11,12 @@ import (
 	"github.com/opensourceways/hot-topic-website-backend/hottopicmanagement/domain/repository"
 	"github.com/opensourceways/hot-topic-website-backend/utils"
 )
+
+var NoInvokeCommunity = []string{
+	"vllm", "unifiedbus", "openeuler", "mindcluster", "mindie", "mindsdk", "mindstudio", "pta",
+	"openubmc", "mindspeed", "pytorch", "triton", "sglang", "verl", "tilelang", "sgl",
+	"mindspore", "openfuyao", "ascendnpuir", "cannopen",
+}
 
 func newdoneCache() doneCache {
 	return doneCache{
@@ -67,14 +74,17 @@ func (h *handler) handle(needStop func() bool) {
 
 	for _, community := range h.communities {
 		if needStop() {
+			print("stop handle")
 			return
 		}
 
 		if h.cache.isDone(community) {
+			print("skip community:", community)
 			continue
 		}
 
 		if b, err := h.isDone(community, date, needStop); b {
+			print("is done, community:", community)
 			h.cache.add(community)
 			continue
 
@@ -83,7 +93,7 @@ func (h *handler) handle(needStop func() bool) {
 
 			continue
 		}
-
+		logrus.Infof("apply hot topic, community:%s", community)
 		err := h.doApply(community, needStop)
 		logrus.Infof("apply hot topic, community:%s, err:%v", community, err)
 
@@ -100,6 +110,9 @@ func (h *handler) handle(needStop func() bool) {
 }
 
 func (h *handler) isDone(community string, date int64, needStop func() bool) (bool, error) {
+	if slices.Contains(NoInvokeCommunity, community) {
+		return false, nil
+	}
 	v, err := h.findUpdatingTime(community, needStop)
 	if err != nil {
 		return false, err
