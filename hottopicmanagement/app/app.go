@@ -26,7 +26,7 @@ type AppService interface {
 }
 
 var NoInvokeCommunity = []string{
-	"vllm", "unifiedbus", "openeuler", "mindcluster", "mindie", "mindsdk", "mindstudio", "pta",
+	"vllm", "unifiedbus", "openeuler", "mindcluster", "mindie", "mindsdk", "mindseriessdk", "mindstudio", "pta",
 	"openubmc", "mindspeed", "pytorch", "triton", "sglang", "verl", "tilelang", "sgl",
 	"mindspore", "openfuyao", "ascendnpuir", "cannopen", "boostkit",
 }
